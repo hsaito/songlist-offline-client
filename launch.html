@@ -2,6 +2,18 @@
 <head>
 <script type="text/javascript" src="angular-1.0.1.min.js"></script>
 <script type="text/javascript" src="parser.js"></script>
+<script type="text/javascript">
+  window.onload = function() {
+  document.getElementById('content').innerHTML = "<em>Empty. Please hit the update button.</em>";
+  startDatabaseReader(function(result)
+  {
+  console.log("Rendering result");
+  document.getElementById('content').innerHTML = result;
+  }
+  );
+  }
+ 
+</script>
 <title>Hideki's Songlist Offline Client</title>
 </head>
 <body>
@@ -9,6 +21,7 @@
 <div ng-controller="readController">
   <button ng-click="update()">Update</button>
   <div id="content">
+
   </div>
 </div>
 </body>

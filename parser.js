@@ -60,7 +60,7 @@ function startDatabaseReader(callback)
     if(songlistdb != null)
     {
 	// Authors the list
-	var result = "<table><table border=\"\"1\"><tr><th>Song ID</th><th>Title</th><th>Artist</th><th>Origin</th></tr>";
+	var result = "<table><table border=\"\"1\"><tr><th>Song ID</th><th>Title</th><th>Artist</th><th>Origin</th><th>JoySound Wii</th></tr>";
 	songlistdb.transaction(function (tx)
 			       {
 				   console.log("Creating table");

@@ -18,10 +18,13 @@
 </head>
 <body>
 <h1>Hideki's Songlist Offline Client</h1>
+<div id="content"></div>
 <div ng-controller="readController">
   <button ng-click="update()">Update</button>
-  <div id="content">
-
+  <div>
+    <table border="1"><tr><th>Song ID</th><th>Title</th><th>Artist</th><th>Origin</th><th>JoySound Wii</th></tr>
+      <tr ng-repeat="song in songData"><td>{{song.songId}}</td><td>{{song.songTitle}}</td><td>{{song.songArtist}}</td><td>{{song.songReference}}</td><td>{{song.joysound}}</td></tr>
+    </table>
   </div>
 </div>
 </body>

@@ -1,6 +1,7 @@
 var targetURI = "http://songlist.hclippr.com/api.php?callback=JSON_CALLBACK";
 var targetFormat = "JSONP";
 var songlistdb = null;
+var songData = [];
 
 function readController($scope, $http)
 {
@@ -24,11 +25,16 @@ function readController($scope, $http)
 								  }
 								  
 								 );
-					   startDatabaseReader(dumpToPage);
+					   startDatabaseReader(function(sdata)
+							       {
+								   $scope.songData = songData;
+								   document.getElementById('content').innerHTML = "<em>Ready</em>";
+							       }
+							      );
 				       }
 				      ).
 			       error(function(data, status) {
-					 document.getElementById('content').innerHTML = "Error reading data";
+					 document.getElementById('content').innerHTML = "<em>Error reading data</em>";
 					 console.log(data);
 				     }); 
 		       }
@@ -36,11 +42,7 @@ function readController($scope, $http)
     };   
 }  
 
-function dumpToPage(result)
-{
-    console.log("Rendering result");
-    document.getElementById('content').innerHTML = result;
-}
+
 
 function startDatabaseReader(callback)
 {
@@ -60,29 +62,29 @@ function startDatabaseReader(callback)
     if(songlistdb != null)
     {
 	// Authors the list
-	var result = "<table><table border=\"\"1\"><tr><th>Song ID</th><th>Title</th><th>Artist</th><th>Origin</th><th>JoySound Wii</th></tr>";
+
+
 	songlistdb.transaction(function (tx)
 			       {
+				   songData = [];
 				   console.log("Creating table");
 				   tx.executeSql('SELECT * FROM List',[], function(tx, rs){
 						     for(var i = 0; i< rs.rows.length; i++) {
 							 console.log("Getting "+i);
 							 var row = rs.rows.item(i);
-							 result = result + "<tr><td>"+row['songId']+
-							     "</td><td>"+row['songTitle']+
-							     "</td><td>"+row['songArtist']+
-							     "</td><td>"+row['songReference']+
-							     "</td><td>"+row['joysound']+"</td></tr>";
-			  }
-						     result = result + "</table>";
-						     callback(result);
+							 songData[i] = [];
+							 songData[i].songId = row['songId'];
+							 songData[i].songTitle = row['songTitle'];
+							 songData[i].songArtist = row['songArtist'];
+							 songData[i].songReference = row['songReference'];
+							 songData[i].joysound = row['joysound'];
+						     }
 						 });   
-			       }
-			      );
+			       });				 
+	callback(songData); 	
+
     }
 }
-
-
 
 // Open (or create) database
 function startDatabase(callback)
